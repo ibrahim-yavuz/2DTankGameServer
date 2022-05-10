@@ -1,11 +1,11 @@
 import json
 
 class Player:
-    def __init__(self, username, host, port):
+    def __init__(self, username, address):
         self.username = username
-        self.host = host
-        self.port = port
-        self.address = (host, port)
+        self.host = address[0]
+        self.port = address[1]
+        self.address = address
 
     def toJson(self):
         player_to_json = {'username': self.username, 'host': self.host, 'port': self.port}
