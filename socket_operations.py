@@ -1,11 +1,11 @@
 import json
 import socket
-import config
+import constants
 from player import Player
 from player_info import PlayerInfo
 
-buffer_size = config.host['buffer_size']
-host_ip = config.host['ip']
+buffer_size = constants.BUFFER_SIZE
+host_ip = constants.HOST_IP
 
 class SocketOperations:
     players = []
@@ -13,6 +13,17 @@ class SocketOperations:
 
     def __init__(self, port):
         self.UDPServerSocket.bind((host_ip, port))
+
+    def get_socket(self):
+        return self.UDPServerSocket
+
+    def get_host(self) -> str:
+        return self.UDPServerSocket.getsockname()[0]
+
+
+    def get_port_number(self) -> int:
+        return self.UDPServerSocket.getsockname()[1]
+
 
     def send_command(self, command):
         bytesToSend = str.encode(command)
@@ -25,7 +36,7 @@ class SocketOperations:
             message = bytesAddressPair[0].decode('utf-8')
             address = bytesAddressPair[1]
 
-            if message != config.commands['start']:
+            if message != constants.START:
                 player = Player(message, address)
                 if player not in self.players:
                     self.players.append(player)
@@ -66,4 +77,9 @@ class SocketOperations:
                 self.send_player_info(player_info)
             except:
                 print("An error has occured")
+                self.UDPServerSocket.close()
+                break
+    
+    def close_socket(self):
+        self.UDPServerSocket.close()
 

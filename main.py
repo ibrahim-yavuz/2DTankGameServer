@@ -1,7 +1,8 @@
-from http import server
-import config
+import constants
 from socket_operations import *
+import sys
 
-server_socket = SocketOperations(config.host['port'])
-print(server_socket.get_connected_clients())
-server_socket.start_the_game()
+main_server_socket = SocketOperations(0)
+print("Started the server at - {}:{}".format(main_server_socket.get_host(), main_server_socket.get_port_number()))
+main_server_socket.get_connected_clients()
+main_server_socket.start_the_game()
