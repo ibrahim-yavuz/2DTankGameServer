@@ -1,6 +1,4 @@
-import constants
 from socket_operations import *
-import sys
 
 main_server_socket = SocketOperations(0)
 print("Started the server at - {}:{}".format(main_server_socket.get_host(), main_server_socket.get_port_number()))
