@@ -1,7 +1,7 @@
 import json
 
 class Data:
-    def init(self, dataType, incomingData):
+    def __init__(self, dataType, incomingData):
         self.dataType = dataType
         self.incomingData = incomingData
 
