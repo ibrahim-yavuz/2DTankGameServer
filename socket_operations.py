@@ -38,24 +38,6 @@ class SocketOperations:
 
         return message
 
-        
-    def get_connected_clients(self) -> str:
-        while True:
-            bytesAddressPair = SocketOperations.UDPServerSocket.recvfrom(buffer_size)
-            message = bytesAddressPair[0].decode('utf-8')
-            address = bytesAddressPair[1]
-
-            if message != constants.START:
-                player = Player(message, address)
-                if player not in self.players:
-                    self.players.append(player)
-                self.send_player_data()
-            else:
-                self.send_data(message)
-                break
-        return self.players
-
-
     def send_player_data(self):
         new_json = "["
         for player in self.players:
