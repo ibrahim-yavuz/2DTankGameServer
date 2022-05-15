@@ -1,6 +1,7 @@
 import json
 import socket
 import constants
+from data import Data
 from player import Player
 
 buffer_size = constants.BUFFER_SIZE
@@ -34,27 +35,21 @@ class SocketOperations:
         bytesAddressPair = self.UDPServerSocket.recvfrom(buffer_size)
         message = bytesAddressPair[0].decode('utf-8')
 
-        print("{} from {}".format(message, bytesAddressPair[1]))
+        data = Data.fromJson(message)
 
-        return message
+        if(data.dataType == "PlayerConnected"):
+            player_data = Player.fromJson(data.incomingData)
+            if(player_data not in self.players):
+                self.players.append(player_data)
 
-    def send_player_data(self):
-        new_json = "["
-        for player in self.players:
-            if player == self.players[len(self.players) - 1]:
-                new_json = new_json + player.toJson()
-            else:
-                new_json = new_json + player.toJson() + ","
-        new_json = json.loads(new_json + "]")
-        self.send_data(json.dumps(new_json))
-        return new_json    
+        return message  
 
 
     def start_the_game(self):
         while True:
             data = self.get_data()
             self.send_data(data)
-            
+                   
     
     def close_socket(self):
         self.UDPServerSocket.close()
