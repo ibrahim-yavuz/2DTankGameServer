@@ -12,9 +12,9 @@ class Player:
         return json.dumps(player_to_json)
 
     def fromJson(playerJson):
-        player = Player()
         playerJson = json.loads(playerJson)
-        player.username = playerJson['username']
-        player.host = playerJson['host']
-        player.port = playerJson['port']
+        username = playerJson['username']
+        host = playerJson['host']
+        port = playerJson['port']
+        player = Player(username, (host, port))
         return player
