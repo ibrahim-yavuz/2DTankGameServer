@@ -47,7 +47,7 @@ class SocketOperations:
             if(player_data not in self.players):
                 print(player_data.toJson())
                 self.players.append(player_data)
-                return data
+                return message
 
         return message  
 
