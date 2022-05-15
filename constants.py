@@ -1,6 +1,6 @@
 #Config
-HOST_IP = '192.168.1.114'
-PORT = 65413
+HOST_IP = '178.62.199.146'
+PORT = 5555
 BUFFER_SIZE = 4096
 
 #Commands

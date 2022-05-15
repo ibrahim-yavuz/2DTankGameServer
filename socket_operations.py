@@ -29,13 +29,15 @@ class SocketOperations:
         for player in self.players:
             self.UDPServerSocket.sendto(data, player.address)
 
+
     def get_data(self):
         bytesAddressPair = self.UDPServerSocket.recvfrom(buffer_size)
         message = bytesAddressPair[0].decode('utf-8')
 
-        print(message)
+        print("{} from {}".format(message, bytesAddressPair[1]))
 
         return message
+
         
     def get_connected_clients(self) -> str:
         while True:
@@ -70,6 +72,7 @@ class SocketOperations:
         while True:
             data = self.get_data()
             self.send_data(data)
+            
     
     def close_socket(self):
         self.UDPServerSocket.close()
