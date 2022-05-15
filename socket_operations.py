@@ -42,7 +42,7 @@ class SocketOperations:
         data = Data.fromJson(message)
 
         if(data.dataType == "PlayerConnected"):
-            player_data = Player(data.incomingData.username, address)
+            player_data = Player(data.incomingData['username'], address)
             
             if(player_data not in self.players):
                 print(player_data.toJson())
