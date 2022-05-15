@@ -43,6 +43,7 @@ class SocketOperations:
             player_data = Player.fromJson(json.dumps(data.incomingData))
             if(player_data not in self.players):
                 self.players.append(player_data)
+            return self.players
 
         return message  
 
