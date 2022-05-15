@@ -10,7 +10,7 @@ class Player:
         self.address = address
 
     def toJson(self):
-        player_to_json = {'user': self.user, 'ip': self.host, 'port': self.port}
+        player_to_json = {'user': self.user, 'ip': self.ip, 'port': self.port}
         return json.dumps(player_to_json)
 
     def fromJson(playerJson):
