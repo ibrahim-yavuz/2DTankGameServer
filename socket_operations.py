@@ -41,8 +41,9 @@ class SocketOperations:
 
         if(data.dataType == "PlayerConnected"):
             player_data = Player.fromJson(json.dumps(data.incomingData))
-            print(player_data.toJson())
+            
             if(player_data not in self.players):
+                print(player_data.toJson())
                 self.players.append(player_data)
                 return player_data.toJson()
 
