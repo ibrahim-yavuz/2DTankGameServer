@@ -40,7 +40,7 @@ class SocketOperations:
         data = Data.fromJson(message)
 
         if(data.dataType == "PlayerConnected"):
-            player_data = Player.fromJson(data.incomingData)
+            player_data = Player.fromJson(json.dumps(data.incomingData))
             if(player_data not in self.players):
                 self.players.append(player_data)
 
