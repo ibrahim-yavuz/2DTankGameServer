@@ -35,6 +35,8 @@ class SocketOperations:
         bytesAddressPair = self.UDPServerSocket.recvfrom(buffer_size)
         message = bytesAddressPair[0].decode('utf-8')
 
+        print(message)
+
         data = Data.fromJson(message)
 
         if(data.dataType == "PlayerConnected"):
@@ -49,7 +51,7 @@ class SocketOperations:
         while True:
             data = self.get_data()
             self.send_data(data)
-                   
+
     
     def close_socket(self):
         self.UDPServerSocket.close()
