@@ -17,19 +17,18 @@ class SocketOperations:
     def get_socket(self):
         return self.UDPServerSocket
 
-    def get_host(self) -> str:
+    def get_host(self):
         return self.UDPServerSocket.getsockname()[0]
 
 
-    def get_port_number(self) -> int:
+    def get_port_number(self):
         return self.UDPServerSocket.getsockname()[1]
 
 
     def send_data(self, data):
         data = str.encode(data)
         for player in self.players:
-            print(player.address)
-            self.UDPServerSocket.sendto(data, player.address)
+            self.UDPServerSocket.sendto(data, Player.fromJson(player).address)
 
 
     def get_data(self):
@@ -37,24 +36,24 @@ class SocketOperations:
         message = bytesAddressPair[0].decode('utf-8')
         address = bytesAddressPair[1]
 
-        print(message)
-
         data = Data.fromJson(message)
 
-        if(data.dataType == "PlayerConnected"):
+        if(data.dataType == "PlayersConnected"):
             player_data = Player(data.incomingData['username'], address)
             
-            if(player_data not in self.players):
-                print(player_data.toJson())
-                self.players.append(player_data)
-                return message
+            if(player_data.toJson() not in self.players):
+                self.players.append(player_data.toJson())
+            return Player.getAllPlayers(self.players).toJson()
 
-        return message  
+        else:
+            return message
+          
 
 
     def start_the_game(self):
         while True:
             data = self.get_data()
+            print(data)
             self.send_data(data)
 
     

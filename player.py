@@ -1,4 +1,6 @@
 import json
+from constants import PLAYERS_CONNECTED
+from data import Data
 
 class Player:
     def __init__(self, username, address):
@@ -18,3 +20,10 @@ class Player:
         port = playerJson['port']
         player = Player(username, (host, port))
         return player
+
+    def getAllPlayers(players):
+        players_json = "["
+        players_json = players_json + ','.join(players)
+        players_json = players_json + "]"
+        data = Data(PLAYERS_CONNECTED, json.loads(players_json))
+        return data
