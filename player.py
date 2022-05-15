@@ -3,22 +3,22 @@ from constants import PLAYERS_CONNECTED
 from data import Data
 
 class Player:
-    def __init__(self, username, address):
-        self.username = username
-        self.host = address[0]
+    def __init__(self, user, address):
+        self.user = user
+        self.ip = address[0]
         self.port = address[1]
         self.address = address
 
     def toJson(self):
-        player_to_json = {'username': self.username, 'host': self.host, 'port': self.port}
+        player_to_json = {'user': self.user, 'ip': self.host, 'port': self.port}
         return json.dumps(player_to_json)
 
     def fromJson(playerJson):
         playerJson = json.loads(playerJson)
-        username = playerJson['username']
-        host = playerJson['host']
+        user = playerJson['user']
+        ip = playerJson['ip']
         port = playerJson['port']
-        player = Player(username, (host, port))
+        player = Player(user, (ip, port))
         return player
 
     def getAllPlayers(players):
