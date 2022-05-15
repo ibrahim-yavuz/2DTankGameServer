@@ -9,7 +9,7 @@ class Data:
         data_to_json = {'dataType': self.dataType, 'incomingData': self.incomingData}
         return json.dumps(data_to_json)
 
-    def fromJson(playerJson):
+    def fromJson(dataJson):
         data = Data()
         dataJson = json.loads(dataJson)
         data.dataType = dataJson['dataType']
