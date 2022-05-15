@@ -10,5 +10,6 @@ class Data:
         return json.dumps(data_to_json)
 
     def fromJson(dataJson):
+        dataJson = json.loads(dataJson)
         data = Data(dataJson['dataType'], dataJson['incomingData'])
         return data
