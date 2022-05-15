@@ -38,7 +38,7 @@ class SocketOperations:
 
         data = Data.fromJson(message)
 
-        if(data.dataType == "PlayersConnected"):
+        if(data.type == "PlayersConnected"):
             player_data = Player(data.data['user'], address)
             
             if(player_data.toJson() not in self.players):
@@ -48,7 +48,6 @@ class SocketOperations:
         else:
             return message
           
-
 
     def start_the_game(self):
         while True:
