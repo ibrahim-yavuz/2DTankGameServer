@@ -56,6 +56,7 @@ class SocketOperations:
     def start_the_game(self):
         while True:
             data = self.get_data()
+            print(data)
             self.send_data(data)
 
     
