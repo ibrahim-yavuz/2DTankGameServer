@@ -1,4 +1,3 @@
-import json
 import socket
 import constants
 from data import Data
@@ -38,13 +37,15 @@ class SocketOperations:
 
         data = Data.fromJson(message)
 
-        if(data.type == "PlayersConnected"):
+        if(data.type == constants.PLAYERS_CONNECTED):
             player_data = Player(data.data['user'], address)
             
             if(player_data.toJson() not in self.players):
                 self.players.append(player_data.toJson())
             return Player.getAllPlayers(self.players).toJson()
-
+        elif(data.type == constants.COMMAND):
+            print("Player {} disconnected from the server".format(self.find_player_with_address(address)))
+            self.players.remove(self.find_player_with_address(address))            
         else:
             return message
           
@@ -52,8 +53,15 @@ class SocketOperations:
     def start_the_game(self):
         while True:
             data = self.get_data()
-            print(data)
             self.send_data(data)
+
+    
+    def find_player_with_address(self, player_address):
+        for player in self.players:
+            player_data = Player.fromJson(player)
+            if player_data.address == player_address:
+                return player_data.toJson()
+        return False        
 
     
     def close_socket(self):
