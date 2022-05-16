@@ -63,6 +63,7 @@ class SocketOperations:
     def find_player_with_address(self, player_address):
         for player in self.players:
             player_data = Player.fromJson(player)
+            print("{} - player data: {}".format(player_address, player_data.address))
             if player_data.address == player_address:
                 return player_data.toJson()
         return False
