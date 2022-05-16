@@ -45,7 +45,8 @@ class SocketOperations:
             return Player.getAllPlayers(self.players).toJson()
         elif(data.type == constants.COMMAND):
             print("Player {} disconnected from the server".format(self.find_player_with_address(address)))
-            self.players.remove(self.find_player_with_address(address))            
+            self.players.remove(self.find_player_with_address(address))  
+            return Player.getAllPlayers(self.players).toJson()
         else:
             return message
           
