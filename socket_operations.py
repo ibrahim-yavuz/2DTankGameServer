@@ -43,7 +43,7 @@ class SocketOperations:
             if(player_data.toJson() not in self.players):
                 self.players.append(player_data.toJson())
             return Player.getAllPlayers(self.players).toJson()
-        elif(data.type == constants.COMMAND):
+        elif(data.type == constants.DISCONNECTED):
             print("Player {} disconnected from the server".format(self.find_player_with_address(address)))
             self.players.remove(self.find_player_with_address(address))  
             return Player.getAllPlayers(self.players).toJson()

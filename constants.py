@@ -6,6 +6,7 @@ BUFFER_SIZE = 4096
 #Data Types
 PLAYERS_CONNECTED = "PlayersConnected"
 COMMAND = "Command"
+DISCONNECTED = "Disconnected"
 
 #Commands
 START = "start"
