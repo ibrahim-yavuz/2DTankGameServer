@@ -44,11 +44,13 @@ class SocketOperations:
                 self.players.append(player_data.toJson())
             return Player.getAllPlayers(self.players).toJson()
         elif(data.type == constants.DISCONNECTED):
-            print("Player {} disconnected from the server".format(self.find_player_with_address(address)))
-            self.players.remove(self.find_player_with_address(address))  
-            return Player.getAllPlayers(self.players).toJson()
-        else:
-            return message
+            if self.find_player_with_address(address) != False:
+                print("Player {} disconnected from the server".format(self.find_player_with_address(address)))
+                self.players.remove(self.find_player_with_address(address))
+                print("Current Players: {}".format(Player.getAllPlayers(self.players).toJson()))
+                return Player.getAllPlayers(self.players).toJson()            
+        
+        return message
           
 
     def start_the_game(self):
@@ -62,7 +64,7 @@ class SocketOperations:
             player_data = Player.fromJson(player)
             if player_data.address == player_address:
                 return player_data.toJson()
-        return False        
+        return False
 
     
     def close_socket(self):
