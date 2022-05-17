@@ -6,7 +6,9 @@ from player import Player
 buffer_size = constants.BUFFER_SIZE
 host_ip = constants.HOST_IP
 
+
 class SocketOperations:
+    playerCounter = 0
     players = []
     UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
@@ -38,17 +40,19 @@ class SocketOperations:
         data = Data.fromJson(message)
 
         if(data.type == constants.PLAYERS_CONNECTED):
-            player_data = Player(data.data['user'], address)
+            player_data = Player("Player{}".format(self.playerCounter), data.data['user'], address)
             
             if(player_data.toJson() not in self.players):
                 self.players.append(player_data.toJson())
+                self.playerCounter = self.playerCounter + 1
             return Player.getAllPlayers(self.players).toJson()
+
         elif(data.type == constants.DISCONNECTED):
             if self.find_player_with_address(address) != False:
                 print("Player {} disconnected from the server".format(self.find_player_with_address(address)))
                 self.players.remove(self.find_player_with_address(address))
                 print("Current Players: {}".format(Player.getAllPlayers(self.players).toJson()))
-                return Player.getAllPlayers(self.players).toJson()            
+                return Player.getAllPlayers(self.players).toJson()
         
         return message
           
@@ -63,7 +67,6 @@ class SocketOperations:
     def find_player_with_address(self, player_address):
         for player in self.players:
             player_data = Player.fromJson(player)
-            print("{} - player data: {}".format(player_address, player_data.address))
             if player_data.address == player_address:
                 return player_data.toJson()
         return False
