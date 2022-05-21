@@ -2,6 +2,9 @@ import socket
 import constants
 from data import Data
 from player import Player
+from _thread import *
+
+from room import Room
 
 buffer_size = constants.BUFFER_SIZE
 host_ip = constants.HOST_IP
@@ -10,6 +13,8 @@ host_ip = constants.HOST_IP
 class SocketOperations:
     playerCounter = 0
     players = []
+    rooms = []
+    roomCounter = 0
     UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
     def __init__(self, port):
@@ -33,35 +38,43 @@ class SocketOperations:
 
 
     def get_data(self):
-        bytesAddressPair = self.UDPServerSocket.recvfrom(buffer_size)
-        message = bytesAddressPair[0].decode('utf-8')
-        address = bytesAddressPair[1]
+        while True:
+            bytesAddressPair = self.UDPServerSocket.recvfrom(buffer_size)
+            message = bytesAddressPair[0].decode('utf-8')
+            address = bytesAddressPair[1]
 
-        data = Data.fromJson(message)
+            data = Data.fromJson(message)
 
-        if(data.type == constants.PLAYERS_CONNECTED):
-            player_data = Player("Player{}".format(self.playerCounter), data.data['user'], address)
-            
-            if(player_data.toJson() not in self.players):
-                self.players.append(player_data.toJson())
-                self.playerCounter = self.playerCounter + 1
-            return Player.getAllPlayers(self.players).toJson()
+            if(data.type == constants.PLAYERS_CONNECTED):
+                player_data = Player("Player{}".format(self.playerCounter), data.data['user'], address)
 
-        elif(data.type == constants.DISCONNECTED):
-            if self.find_player_with_address(address) != False:
-                print("Player {} disconnected from the server".format(self.find_player_with_address(address)))
-                self.players.remove(self.find_player_with_address(address))
-                print("Current Players: {}".format(Player.getAllPlayers(self.players).toJson()))
-                return Player.getAllPlayers(self.players).toJson()
-        
-        return message
+                if(player_data.toJson() not in self.players):
+                    self.players.append(player_data.toJson())
+                    self.playerCounter = self.playerCounter + 1
+                self.send_data(Player.getAllPlayers(self.players).toJson())
+
+            elif(data.type == constants.DISCONNECTED):
+                if self.find_player_with_address(address) != False:
+                    print("Player {} disconnected from the server".format(self.find_player_with_address(address)))
+                    self.players.remove(self.find_player_with_address(address))
+                    print("Current Players: {}".format(Player.getAllPlayers(self.players).toJson()))
+                    self.send_data(Player.getAllPlayers(self.players).toJson())
+
+            elif(data.type == constants.COMMAND):
+                if data.data == constants.CREATE_ROOM:
+                    player_data = Player("Player{}".format(self.playerCounter), "ibrahim", address)
+                    room = Room("Room{}".format(self.roomCounter), "Deneme Oda", self.find_player_with_address(address))
+                    self.rooms.append(room.toJson())
+                    print(Room.getAllRooms(self.rooms).toJson())
+                    self.roomCounter = self.roomCounter + 1
+                    self.playerCounter = self.playerCounter + 1
+
+
+            self.send_data(message)
           
 
     def start_the_game(self):
-        while True:
-            data = self.get_data()
-            print(data)
-            self.send_data(data)
+        self.get_data()
 
     
     def find_player_with_address(self, player_address):
