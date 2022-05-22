@@ -1,7 +1,7 @@
 #Config
 HOST_IP = '192.168.1.109'
 PORT = 5555
-BUFFER_SIZE = 20000
+BUFFER_SIZE = 3000
 
 #Data Types
 PLAYERS_CONNECTED = "PlayersConnected"

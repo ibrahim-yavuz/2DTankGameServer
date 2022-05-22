@@ -14,6 +14,7 @@ class Player:
         player_to_json = {'user': self.user, 'id': self.id,'ip': self.ip, 'port': self.port}
         return json.dumps(player_to_json)
 
+
     def fromJson(playerJson):
         playerJson = json.loads(playerJson)
         user = playerJson['user']
@@ -22,6 +23,7 @@ class Player:
         port = playerJson['port']
         player = Player(id, user, (ip, port))
         return player
+        
 
     def getAllPlayers(players):
         players_json = "["
