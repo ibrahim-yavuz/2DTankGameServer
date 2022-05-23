@@ -10,6 +10,10 @@ class Player:
         self.port = address[1]
         self.address = address
 
+    def toDict(self):
+        player_to_dict = {'user': self.user, 'id': self.id,'ip': self.ip, 'port': self.port}
+        return player_to_dict
+
     def toJson(self):
         player_to_json = {'user': self.user, 'id': self.id,'ip': self.ip, 'port': self.port}
         return json.dumps(player_to_json)
@@ -26,8 +30,6 @@ class Player:
         
 
     def getAllPlayers(players):
-        players_json = "["
-        players_json = players_json + ','.join(players)
-        players_json = players_json + "]"
-        data = Data(PLAYERS_CONNECTED, json.loads(players_json))
-        return data
+        players_json = [obj.toDict() for obj in players]
+        data = Data(PLAYERS_CONNECTED, players_json, "")
+        return data.toJson()

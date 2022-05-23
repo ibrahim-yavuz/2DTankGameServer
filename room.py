@@ -13,6 +13,10 @@ class Room:
         room_to_json = {'room_id': self.room_id, 'name': self.name, 'creator': self.creator, 'players': self.players}
         return json.dumps(room_to_json)
 
+    def toDict(self):
+        room_to_dict = {'room_id': self.room_id, 'name': self.name, 'creator': self.creator, 'players': self.players}
+        return room_to_dict
+
     def fromJson(roomJson):
         roomJson = json.loads(roomJson)
         room_id = roomJson['room_id']
@@ -23,10 +27,7 @@ class Room:
         return room
 
     def getAllRooms(rooms):
-        rooms_json = "["
-        rooms_json = rooms_json + ','.join(rooms)
-        rooms_json = rooms_json + "]"
-        data = Data(constants.ACTIVE_ROOMS, json.loads(rooms_json))
+        rooms_json = [obj.toDict() for obj in rooms]
+        data = Data(constants.ACTIVE_ROOMS, rooms_json, "")
         return data
-
     
