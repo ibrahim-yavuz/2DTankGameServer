@@ -3,9 +3,8 @@ import socket
 import constants
 from data import Data
 from player import Player
-from _thread import *
+import threading
 
-from room import Room
 
 buffer_size = constants.BUFFER_SIZE
 host_ip = constants.HOST_IP
@@ -30,11 +29,17 @@ class SocketOperations:
         return self.UDPServerSocket.getsockname()[1]
 
     
+    def send_data_to_player(self, data, player):
+        self.UDPServerSocket.sendto(data, Player.fromJson(player).address)
+
+    
     #Server-Client Communication
     def send_data(self, data):
+        threads = []
         data = str.encode(data)
         for player in self.players:
-            self.UDPServerSocket.sendto(data, Player.fromJson(player).address)
+            send_data_thread = threading.Thread(target=self.send_data_to_player, args=(data, player,))
+            send_data_thread.start()
 
 
     def get_data(self):
